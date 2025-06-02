@@ -1,5 +1,5 @@
 # Gunakan PHP dengan FPM dan ekstensi Laravel umum
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
 # Install dependensi dasar
 RUN apt-get update && apt-get install -y \
