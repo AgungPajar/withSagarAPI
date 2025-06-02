@@ -17,11 +17,6 @@ class EnsureUserCanAccessClub
         $user = Auth::user();
         $clubId = $request->route('clubId');
 
-        // Debug
-        // logger()->info('User Role: ' . $user->role);
-        // logger()->info('User Club ID: ' . $user->club_id);
-        // logger()->info('Requested Club ID: ' . $clubId);
-
         if ($user->role === 'osis') {
             return $next($request);
         }

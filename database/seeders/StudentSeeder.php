@@ -7,15 +7,34 @@ use App\Models\Student;
 
 class StudentSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $students = [
-            ['name' => 'Andi Prasetyo', 'nisn' => '1234567890', 'club_id' => 1],
-            ['name' => 'Budi Santoso', 'nisn' => '0987654321', 'club_id' => 2],
-            ['name' => 'Cindy Putri', 'nisn' => '1122334455', 'club_id' => 3],
-            ['name' => 'Dinda Ayu', 'nisn' => '2233445566', 'club_id' => 4],
-            ['name' => 'Eka Putra', 'nisn' => '3344556677', 'club_id' => 5],
-            // Tambahkan lebih banyak jika diperlukan
+            [
+                'nisn' => '1234567890',
+                'name' => 'Agung Pajar',
+                'class' => 'XI PPL 1',
+            ],
+            [
+                'nisn' => '2345678901',
+                'name' => 'Dewi Lestari',
+                'class' => 'X AKL 2',
+            ],
+            [
+                'nisn' => '3456789012',
+                'name' => 'Budi Santoso',
+                'class' => 'XI TJK 1',
+            ],
+            [
+                'nisn' => '4567890123',
+                'name' => 'Citra Ramadhani',
+                'class' => 'XI DKV 3',
+            ],
+            [
+                'nisn' => '5678901234',
+                'name' => 'Fajar Pratama',
+                'class' => 'X TKF 1',
+            ],
         ];
 
         foreach ($students as $student) {

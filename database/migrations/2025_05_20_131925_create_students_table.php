@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('nisn')->unique();
-            $table->foreignIdFor(\App\Models\Club::class); // Magic!
+            $table->string('class');
             $table->timestamps();
         });
     }

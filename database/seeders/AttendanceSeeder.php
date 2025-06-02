@@ -2,21 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Attendance;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AttendanceSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $attendances = [
-            ['student_id' => 1, 'date' => '2025-04-06', 'status' => 'hadir'],
-            ['student_id' => 2, 'date' => '2025-04-06', 'status' => 'tidak hadir'],
-            ['student_id' => 3, 'date' => '2025-04-06', 'status' => 'hadir'],
-        ];
-
-        foreach ($attendances as $attendance) {
-            Attendance::create($attendance);
-        }
+        Attendance::insert([
+            [
+                'student_id' => 1,
+                'club_id' => 1, // 🟢 tambahkan club_id
+                'date' => Carbon::parse('2025-04-06'),
+                'status' => 'hadir',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // tambahkan data lainnya jika perlu
+        ]);
     }
 }
