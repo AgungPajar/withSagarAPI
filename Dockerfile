@@ -3,31 +3,36 @@ FROM php:8.2-fpm
 
 # Install dependensi dasar
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip nginx \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+    git \
+    curl \
+    unzip \
+    zip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libsodium-dev \
+    libpg-dev \
+    default-mysql-client \
+    default-limbsqlclient-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    && docker-php-ext-install --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_pgspql pdo_mysql mbstring exif pcntl bcmath gd zip sodium
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Atur direktori kerja
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Salin semua file ke container
 COPY . .
+EXPOSE 8000
 
 # Install dependensi Laravel
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
+RUN npm install
 
-# Set permission folder penting
-RUN chmod -R 777 storage bootstrap/cache
 
-# Salin konfigurasi nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Salin script start
-COPY start-container.sh /start-container.sh
-RUN chmod +x /start-container.sh
-
-EXPOSE 80
-
-CMD ["/start-container.sh"]
+CMD php artisan serve --force && php artisan serve -- host=0.0.0 --port=8000
