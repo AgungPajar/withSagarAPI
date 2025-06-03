@@ -40,9 +40,6 @@ COPY . .
 # Expose port Laravel
 EXPOSE 8080
 
-# storage link
-RUN php artisan storage:link
-
 # Install Laravel dependencies
 RUN composer install
 
