@@ -34,26 +34,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Atur direktori kerja
 WORKDIR /var/www/html
 
-# Salin semua file ke container
+# Salin file ke container
 COPY . .
-
-# Install Laravel dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Salin file .env jika belum ada
-RUN cp .env.example .env
-
-# Generate APP_KEY agar artisan bisa jalan
-RUN php artisan key:generate
-
-# Berikan permission untuk folder Laravel
-RUN chmod -R 775 storage bootstrap/cache
-
-# Jangan jalankan storage:link di tahap build karena bisa error
-# Jalankan saat container running saja
 
 # Expose port Laravel
 EXPOSE 8080
 
-# ✅ Jalankan storage:link & Laravel saat container berjalan
-CMD php artisan storage:link && php artisan serve --host=0.0.0.0 --port=8080
+# storage link
+RUN php artisan storage:link
+
+# Install Laravel dependencies
+RUN composer install
+
+# Jalankan Laravel
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
