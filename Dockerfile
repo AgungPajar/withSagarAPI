@@ -40,12 +40,8 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install
 
-
 # ✅ Generate APP_KEY agar artisan tidak error
-RUN cp .env.example .env && php artisan key:generate
-
-# ✅ Berikan permission agar storage bisa di-link
-RUN chmod -R 775 storage bootstrap/cache
+RUN php artisan key:generate
 
 # storage link
 RUN php artisan storage:link
