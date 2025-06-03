@@ -6,6 +6,7 @@ use App\Models\Club;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ClubController extends Controller
 {
@@ -100,8 +101,11 @@ class ClubController extends Controller
         $club->description = $request->description;
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('logos', 'public');
-            $club->logo_path = $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                'folder' => 'eksul-logos'
+            ])->getSecurePath();
+
+            $club->logo_path = $uploadedFileUrl;
         }
 
         $club->save();
