@@ -53,8 +53,8 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/clubs', [ClubController::class, 'index']);
     Route::post('/clubs', [ClubController::class, 'store']);
     Route::delete('/clubs/{club}', [ClubController::class, 'destroy']);
-    // Route::post('/clubs/{hashedId}/update', [ClubController::class, 'update']);
-    Route::put('/clubs/{hashedId}', [ClubController::class, 'update']);
+    Route::post('/clubs/update', [ClubController::class, 'update']);
+    // Route::put('/clubs/{hashedId}', [ClubController::class, 'update']);
 
     // Tambah pengurus ekskul
     Route::post('/users', [UserController::class, 'store']);

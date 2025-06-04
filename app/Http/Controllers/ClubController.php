@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Club;
 use App\Models\User;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ClubController extends Controller
 {
@@ -81,47 +83,7 @@ class ClubController extends Controller
     // ✅ Update klub dan user
     public function update(Request $request, $hashedId)
     {
-        $decoded = Hashids::decode($hashedId);
-        if (count($decoded) === 0) {
-            return response()->json(['message' => 'ID tidak valid'], 400);
-        }
-
-        $id = $decoded[0];
-        $club = Club::with('user')->findOrFail($id);
-
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'username'    => 'nullable|string|max:255|unique:users,username,' . ($club->user->id ?? 'NULL'),
-            'password'    => 'nullable|string|min:6',
-            'logo'        => 'nullable|image|max:2048',
-        ]);
-
-        $club->name        = $request->name;
-        $club->description = $request->description;
-
-        if ($request->hasFile('logo')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('logo')->getRealPath(), [
-                'folder' => 'eksul-logos'
-            ])->getSecurePath();
-
-            $club->logo_path = $uploadedFileUrl;
-        }
-
-        $club->save();
-
-        // Update user jika ada
-        if ($club->user) {
-            if ($request->username) {
-                $club->user->username = $request->username;
-            }
-            if ($request->password) {
-                $club->user->password = bcrypt($request->password);
-            }
-            $club->user->save();
-        }
-
-        return response()->json(['message' => 'Ekskul berhasil diperbarui']);
+        //
     }
 
     // ✅ Hapus klub dan user pengurus
