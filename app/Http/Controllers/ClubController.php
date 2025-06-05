@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Club;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Vinkla\Hashids\Facades\Hashids;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -101,12 +102,22 @@ class ClubController extends Controller
         $club->description = $request->description;
 
         if ($request->hasFile('logo')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('logo')->getRealPath(), [
-                'folder' => 'eksul-logos'
-            ])->getSecurePath();
+            try {
+                $response = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                    'folder' => 'logos'
+                ]);
 
-            $club->logo_path = $uploadedFileUrl;
+                // Log response Cloudinary
+                Log::info('Cloudinary Response: ' . json_encode($response));
+
+                // Simpan URL lengkap dari Cloudinary
+                $url = $response->getSecurePath();
+                $club->logo_path = $url;
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Upload failed', 'details' => $e->getMessage()], 500);
+            }
         }
+
 
         $club->save();
 

@@ -13,7 +13,16 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    // 'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'cloudinary'),
+
+    'cloudinary' => [
+        'driver' => 'cloudinary',
+        'api_key' => env('696217979926121'),
+        'api_secret' => env('1qZ40wZRFl3Xwcdb8wjusQb_0hA'),
+        'cloud_name' => env('de1to5wkj'),
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +50,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
