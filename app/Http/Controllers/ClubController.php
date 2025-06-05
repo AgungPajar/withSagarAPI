@@ -84,61 +84,7 @@ class ClubController extends Controller
     // ✅ Update klub dan user
     public function update(Request $request, $hashedId)
     {
-<<<<<<< HEAD
-        $decoded = Hashids::decode($hashedId);
-        if (count($decoded) === 0) {
-            return response()->json(['message' => 'ID tidak valid'], 400);
-        }
-
-        $id = $decoded[0];
-        $club = Club::with('user')->findOrFail($id);
-
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'username'    => 'nullable|string|max:255|unique:users,username,' . ($club->user->id ?? 'NULL'),
-            'password'    => 'nullable|string|min:6',
-            'logo'        => 'nullable|image|max:2048',
-        ]);
-
-        $club->name        = $request->name;
-        $club->description = $request->description;
-
-        if ($request->hasFile('logo')) {
-            try {
-                $response = Cloudinary::upload($request->file('logo')->getRealPath(), [
-                    'folder' => 'logos'
-                ]);
-
-                // Log response Cloudinary
-                Log::info('Cloudinary Response: ' . json_encode($response));
-
-                // Simpan URL lengkap dari Cloudinary
-                $url = $response->getSecurePath();
-                $club->logo_path = $url;
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Upload failed', 'details' => $e->getMessage()], 500);
-            }
-        }
-
-
-        $club->save();
-
-        // Update user jika ada
-        if ($club->user) {
-            if ($request->username) {
-                $club->user->username = $request->username;
-            }
-            if ($request->password) {
-                $club->user->password = bcrypt($request->password);
-            }
-            $club->user->save();
-        }
-
-        return response()->json(['message' => 'Ekskul berhasil diperbarui']);
-=======
         //
->>>>>>> 1ea5fe9f3cc291370cfa8a2b70f670a641495666
     }
 
     // ✅ Hapus klub dan user pengurus
