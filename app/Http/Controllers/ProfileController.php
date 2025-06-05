@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Club;
+use Cloudinary\Cloudinary;
 
 class ProfileController extends Controller
 {
@@ -39,17 +40,22 @@ class ProfileController extends Controller
                 $club->name = $request->name;
                 $club->description = $request->description ?? $club->description;
 
+                $cloudinary = new Cloudinary([
+                    'cloud' => [
+                        'cloud_name' => env(key: 'CLOUDINARY_CLOUD_NAME'),
+                        'api_key' => env('CLOUDINARY_API_KEY'),
+                        'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    ],
+                ]);
                 // ✅ Upload logo baru jika ada
                 if ($request->hasFile('logo')) {
-                    // Opsional: hapus logo lama
-                    if ($club->logo_path && Storage::disk('public')->exists($club->logo_path)) {
-                        Storage::disk('public')->delete($club->logo_path);
-                    }
+                    $uploadedFileUrl = $cloudinary->uploadApi()->upload($request->file('logo')->getRealPath(), [
+                        'folder' => 'eksul-logos',
+                        'resource_type' => 'image',
+                    ]);
 
-                    $path = $request->file('logo')->store('logos', 'public');
-                    $club->logo_path = $path;
+                    $club->logo_path = $uploadedFileUrl['secure_url'] ?? null;
                 }
-
                 $club->save();
             }
         }

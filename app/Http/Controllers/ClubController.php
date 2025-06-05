@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Club;
 use App\Models\User;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Vinkla\Hashids\Facades\Hashids;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ClubController extends Controller
 {
@@ -82,6 +84,7 @@ class ClubController extends Controller
     // ✅ Update klub dan user
     public function update(Request $request, $hashedId)
     {
+<<<<<<< HEAD
         $decoded = Hashids::decode($hashedId);
         if (count($decoded) === 0) {
             return response()->json(['message' => 'ID tidak valid'], 400);
@@ -133,6 +136,9 @@ class ClubController extends Controller
         }
 
         return response()->json(['message' => 'Ekskul berhasil diperbarui']);
+=======
+        //
+>>>>>>> 1ea5fe9f3cc291370cfa8a2b70f670a641495666
     }
 
     // ✅ Hapus klub dan user pengurus
