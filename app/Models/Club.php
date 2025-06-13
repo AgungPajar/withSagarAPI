@@ -13,7 +13,7 @@ class Club extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class, 'club_student', 'club_id', 'student_id');
     }
 
     public function getLogoUrlAttribute()

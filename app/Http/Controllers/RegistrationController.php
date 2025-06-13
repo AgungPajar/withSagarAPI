@@ -20,7 +20,9 @@ class RegistrationController extends Controller
             'username'   => 'required|string|max:50|unique:users,username',
             'email'      => 'required|email|max:255|unique:users,email',
             'club_id'    => 'required|exists:clubs,id',
-            'password'   => 'required|string|min:6|confirmed', // password_confirmation
+            'password'   => 'required|string|min:6',
+            'confirm_password'   => 'required|string|min:6|same:password', // password_confirmation
+            'phone'      => 'required|string|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -40,13 +42,15 @@ class RegistrationController extends Controller
         ]);
 
         // Buat student
-        Student::create([
+        $student = Student::create([
             'user_id' => $user->id,
             'name'    => $request->name,
             'nisn'    => $request->nisn,
             'class'   => $request->class,
             'club_id' => $request->club_id,
+            'phone'   => $request->phone,
         ]);
+        $student->clubs()->attach($request->club_id);
 
         return response()->json(['message' => 'Pendaftaran berhasil'], 201);
     }

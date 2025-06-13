@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('nisn')->unique();
             $table->string('class');
+            $table->string('phone');
             $table->timestamps();
         });
     }
